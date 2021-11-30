@@ -50,6 +50,15 @@ namespace TrpgDiceBot
 				formula = formula.Replace(m.Value, "^" + m.Groups["val"].Value);
 			}
 
+			// 数字の直後に括弧は * を挿入する
+			mc = Regex.Matches(formula, @"(?<val>\d+)\(");
+
+			foreach (Match m in mc)
+			{
+				Console.WriteLine(m.Value);
+				formula = formula.Replace(m.Value, m.Groups["val"].Value + "*(");
+			}
+
 			formula = formula.Replace(")(", ")*(");
 			formula = formula.Replace("(+", "(");
 			formula = formula.Replace("-(", "-1*(");
