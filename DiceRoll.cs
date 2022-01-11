@@ -33,6 +33,16 @@ namespace TrpgDiceBot
 				return;
 			}
 
+			// 全角文字を半角文字に、スペースの除去
+			dice_area = ConvertAsciiAndNoSpace.Convert(dice_area);
+
+			if (dice_area == "33-4")
+			{
+				await msg.Channel.SendMessageAsync(msg.Author.Mention + "\n29");
+
+				return;
+			}
+
 			dice_area = dice_area.Replace("＆", "&");
 
 			if (dice_area[0] != '&')
@@ -41,9 +51,6 @@ namespace TrpgDiceBot
 			}
 
 			Console.WriteLine(msg.Content + "\n");
-
-			// 全角文字を半角文字に、スペースの除去
-			dice_area = ConvertAsciiAndNoSpace.Convert(dice_area);
 
 			if (Regex.IsMatch(msg.ToString(), @"(?i)^&help$"))
 			{
@@ -142,6 +149,15 @@ namespace TrpgDiceBot
 				}
 			}
 
+			foreach (Match m in dxs)
+			{
+				if (Int64.Parse(m.Groups["value"].Value) > 10_000)
+				{
+					await channel.SendMessageAsync(msg.Author.Mention + "\nパソコンを破壊する気．．．？");
+					return;
+				}
+			}
+
 			int d, r;
 			d = r = 0;
 
@@ -152,18 +168,18 @@ namespace TrpgDiceBot
 
 				if (m.Groups["type"].Value.ToLower() == "d")
 				{
-					res += NDXRoll(channel, int.Parse(m.Groups["value"].Value), int.Parse(m.Groups["sides"].Value), m.Groups["sign"].ToString() == "-");
+					res += NDSRoll(channel, int.Parse(m.Groups["value"].Value), int.Parse(m.Groups["sides"].Value), m.Groups["sign"].ToString() == "-");
 					d++;
 				}
 				else if (m.Groups["type"].Value.ToLower() == "r")
 				{
 					if (m.Groups["critical"].Value == "")
 					{
-						res += NRXRoll(channel, int.Parse(m.Groups["value"].Value), int.Parse(m.Groups["sides"].Value));
+						res += NRSRoll(channel, int.Parse(m.Groups["value"].Value), int.Parse(m.Groups["sides"].Value));
 					}
 					else
 					{
-						res += NRXRoll(channel, int.Parse(m.Groups["value"].Value), int.Parse(m.Groups["sides"].Value), int.Parse(m.Groups["critical"].Value));
+						res += NRSRoll(channel, int.Parse(m.Groups["value"].Value), int.Parse(m.Groups["sides"].Value), int.Parse(m.Groups["critical"].Value));
 					}
 					r++;
 				}
@@ -184,11 +200,11 @@ namespace TrpgDiceBot
 
 				if (m.Groups["critical"].Value == "")
 				{
-					res += NRXRoll(channel, int.Parse(m.Groups["value"].Value), 10);
+					res += NRSRoll(channel, int.Parse(m.Groups["value"].Value), 10);
 				}
 				else
 				{
-					res += NRXRoll(channel, int.Parse(m.Groups["value"].Value), 10, int.Parse(m.Groups["critical"].Value));
+					res += NRSRoll(channel, int.Parse(m.Groups["value"].Value), 10, int.Parse(m.Groups["critical"].Value));
 				}
 
 				if (res.EndsWith("failed"))
@@ -256,10 +272,10 @@ namespace TrpgDiceBot
 			}
 
 			await msg.Channel.SendMessageAsync(send_msg);
-
 		}
 
-		private static string NDXRoll(ISocketMessageChannel channel, int value, int sides, bool Negative = false)
+		// クトゥルフなど、とても一般的なダイスロール
+		private static string NDSRoll(ISocketMessageChannel channel, int value, int sides, bool Negative = false)
 		{
 			// 戻り文字列初期化
 			string ret_str = "";
@@ -280,7 +296,8 @@ namespace TrpgDiceBot
 			return ret_str;
 		}
 
-		private static string NRXRoll(ISocketMessageChannel channel, int value, int sides, int critical = 10, bool Negative = false)
+		// DX3 の特徴的なダイスロール
+		private static string NRSRoll(ISocketMessageChannel channel, int value, int sides, int critical = 10, bool Negative = false)
 		{
 			critical = Math.Max(Math.Min(critical, sides), 2);
 
