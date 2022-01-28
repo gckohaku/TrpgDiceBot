@@ -15,7 +15,7 @@ namespace TrpgDiceBot
 	[Alias("ver")]
 	public class VersionModule : ModuleBase<SocketCommandContext>
 	{
-		private string _thisVersion = "1.31a";
+		private string _thisVersion = "1.40";
 
 		[Command("")]
 		public async Task TellVersionAsync()

@@ -7,6 +7,9 @@
  *	問題点:
  *	このクラスのメインメソッドである "Execute" メソッドの内容が非常に長くなっていしまっている
  *		→メソッド分けすることを検討
+ *			具体的にどのように？ :
+ *				ダイスコマンドの解析部分、ルールが多くなればなるほどメソッド分けが有効。別のクラスに分けてしまうのも有効。
+ *					→正規表現をコンパイルするクラスを作成することにした。
  */
 
 using System;
@@ -43,9 +46,13 @@ namespace TrpgDiceBot
 				return;
 			}
 
+#if DEBUG
+			dice_area = dice_area.Replace("＃", "#");
+			if (dice_area[0] != '#')
+#else
 			dice_area = dice_area.Replace("＆", "&");
-
 			if (dice_area[0] != '&')
+#endif
 			{
 				return;
 			}
@@ -104,17 +111,30 @@ namespace TrpgDiceBot
 			RandomManager.ClearHistory();
 
 			// キャラクリの位置
+#if DEBUG
+			Match create_coc_match = Regex.Match(dice_area, @"(?i)^#coc$");
+#else
 			Match create_coc_match = Regex.Match(dice_area, @"(?i)^&coc$");
+#endif
 
 			// コマンドが一致したらキャラクリをするよ
 			if (create_coc_match.Success)
 			{
 				await CharacterCreateCoC.Create(msg);
+				return;
 			}
 
+			// ダイスコマンドの解析
 			MatchCollection dices = Regex.Matches(dice_area, @"(?i)(?<sign>(\+|\-|))(?<value>\d+)(?<type>(d|r))(?<sides>\d+)((\[|@)(?<critical>\d+)(\]|))?");
 			MatchCollection fixes = Regex.Matches(dice_area, @"(?i)(?<fix>(\+|\-)\d+)(?=(\+|\-|$))");
 			MatchCollection dxs = Regex.Matches(dice_area, @"(?i)(?<sign>(\+|\-|))(?<value>\d+)dx((\[|@)(?<critical>\d+)(\]|))?");
+			Match emo = Regex.Match(dice_area, @"(?i)(?<value>\d+)?(em|dm|emo){1}(<=|\s)?(?<success>\d+)");
+
+			if (emo.Success)
+			{
+				await channel.SendMessageAsync(msg.Author.Mention + "\n" + TrpgDiceEmoklore.DiceRoll(emo));
+				return;
+			}
 
 			Match target_match = Regex.Match(dice_area, @"(?i)(target|tar|trg|tgt)=(?<minus>\-*)(?<target>\d+)");
 

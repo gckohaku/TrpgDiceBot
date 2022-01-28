@@ -11,12 +11,14 @@ namespace TrpgDiceBot
 	{
 		private static string _settingDataFile = "settingData.txt";
 
-		private DiscordSocketClient _client;
-		private CommandService _comannds;
-		private CommandHandler _handler;
+		private DiscordSocketClient client;
+		private CommandService comannds;
+		private CommandHandler handler;
 
 		static void Main(string[] args)
-			=> new Program().MainAsync().GetAwaiter().GetResult();
+		{
+			new Program().MainAsync().GetAwaiter().GetResult();
+		}
 
 		private Task Log(LogMessage msg)
 		{
@@ -26,16 +28,17 @@ namespace TrpgDiceBot
 
 		public async Task MainAsync()
 		{
-			_client = new DiscordSocketClient();
-			_comannds = new CommandService();
-			_client.Log += Log;
+			client = new DiscordSocketClient();
+			comannds = new CommandService();
+			client.Log += Log;
 
-			_handler = new CommandHandler(_client, _comannds);
+			handler = new CommandHandler(client, comannds);
 
-			await _handler.InitialCommandsAsync();
+			await handler.InitialCommandsAsync();
 
-			await _client.LoginAsync(TokenType.Bot, DoNotUpToGit.HiddingStrings.BotToken);
-			await _client.StartAsync();
+
+			await client.LoginAsync(TokenType.Bot, DoNotUpToGit.HiddingStrings.BotToken);
+			await client.StartAsync();
 
 			await Task.Delay(-1);
 		}
