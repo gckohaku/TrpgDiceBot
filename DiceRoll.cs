@@ -132,7 +132,7 @@ namespace TrpgDiceBot
 
 			if (emo.Success)
 			{
-				await channel.SendMessageAsync(msg.Author.Mention + "\n" + TrpgDiceEmoklore.DiceRoll(emo));
+				await channel.SendMessageAsync(msg.Author.Mention + "\n" + EmokloreDiceRoll.Roll(emo));
 				return;
 			}
 
