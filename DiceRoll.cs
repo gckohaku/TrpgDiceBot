@@ -2,7 +2,6 @@
  *	説明:
  *	ダイスロールの根幹部分
  *	先頭に "&" の文字があるメッセージに対して反応する
- *	mDn ロールと、DX3 で行うダイスロールに対応している
  *	
  *	問題点:
  *	このクラスのメインメソッドである "Execute" メソッドの内容が非常に長くなっていしまっている
@@ -36,8 +35,24 @@ namespace TrpgDiceBot
 				return;
 			}
 
-			// 全角文字を半角文字に、スペースの除去
-			dice_area = ConvertAsciiAndNoSpace.Convert(dice_area);
+			Console.WriteLine(msg.Content + "\n");
+
+			// 全角文字を半角文字に
+			dice_area = ConvertAsciiAndNoSpace.ConvertAscii(dice_area);
+
+#if DEBUG
+			// memory test
+			Match memory_match = Regex.Match(dice_area, @"(?i)^#mem\s(?<memory>.+)$");
+
+			if (memory_match.Success)
+			{
+				MemoryTest.Memory(msg.Author.Id.ToString(), memory_match.Groups["memory"].Value);
+				return;
+			}
+#endif
+
+			// スペースの除去
+			dice_area = ConvertAsciiAndNoSpace.ConvertNoSpace(dice_area);
 
 			if (dice_area == "33-4")
 			{
@@ -56,8 +71,6 @@ namespace TrpgDiceBot
 			{
 				return;
 			}
-
-			Console.WriteLine(msg.Content + "\n");
 
 			if (Regex.IsMatch(msg.ToString(), @"(?i)^&help$"))
 			{
