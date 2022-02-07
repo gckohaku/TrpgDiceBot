@@ -40,6 +40,7 @@ namespace TrpgDiceBot
 			// 全角文字を半角文字に
 			dice_area = ConvertAsciiAndNoSpace.ConvertAscii(dice_area);
 
+			// CoC Character Sheet Memory
 #if DEBUG
 			// memory test
 			Match memory_match = Regex.Match(dice_area, @"(?i)^#mem\s(?<memory>.+)$");
@@ -49,7 +50,15 @@ namespace TrpgDiceBot
 				MemoryTest.Memory(msg.Author.Id.ToString(), memory_match.Groups["memory"].Value);
 				return;
 			}
+
+			Match coc_command_top_match = Regex.Match(dice_area, @"(?i)^#coc6");
+#else
+			Match coc_command_top_match = Regex.Match(dice_area, @"(?i)^&coc6");
 #endif
+			if (coc_command_top_match.Success)
+			{
+
+			}
 
 			// スペースの除去
 			dice_area = ConvertAsciiAndNoSpace.ConvertNoSpace(dice_area);
@@ -133,7 +142,7 @@ namespace TrpgDiceBot
 			// コマンドが一致したらキャラクリをするよ
 			if (create_coc_match.Success)
 			{
-				await CharacterCreateCoC.Create(msg);
+				await Coc6CharacterCreate.Create(msg);
 				return;
 			}
 
