@@ -6,9 +6,7 @@
  *	問題点:
  *	このクラスのメインメソッドである "Execute" メソッドの内容が非常に長くなっていしまっている
  *		→メソッド分けすることを検討
- *			具体的にどのように？ :
- *				ダイスコマンドの解析部分、ルールが多くなればなるほどメソッド分けが有効。別のクラスに分けてしまうのも有効。
- *					→正規表現をコンパイルするクラスを作成することにした。
+ *			TooLongStringAsync メソッドはこのクラス内ではなく、TooLongStringProcess のような名前のクラスに実装したい
  */
 
 using System;
@@ -51,13 +49,23 @@ namespace TrpgDiceBot
 				return;
 			}
 
-			Match coc_command_top_match = Regex.Match(dice_area, @"(?i)^#coc6");
+			Match coc_command_top_match = Regex.Match(dice_area, @"(?i)^#coc");
+			Match coc6_command_top_match = Regex.Match(dice_area, @"(?i)^#coc6");
 #else
-			Match coc_command_top_match = Regex.Match(dice_area, @"(?i)^&coc6");
+			Match coc_command_top_match = Regex.Match(dice_area, @"(?i)^&coc");
+			Match coc6_command_top_match = Regex.Match(dice_area, @"(?i)^&coc6");
 #endif
+			// &coc
 			if (coc_command_top_match.Success)
 			{
-
+				await Coc6CommandProcess.Execute(msg, dice_area[4..]);
+				return;
+			}
+			// &coc6
+			if (coc6_command_top_match.Success)
+			{
+				await Coc6CommandProcess.Execute(msg, dice_area[5..]);
+				return;
 			}
 
 			// スペースの除去
@@ -140,11 +148,11 @@ namespace TrpgDiceBot
 #endif
 
 			// コマンドが一致したらキャラクリをするよ
-			if (create_coc_match.Success)
-			{
-				await Coc6CharacterCreate.Create(msg);
-				return;
-			}
+			//if (create_coc_match.Success)
+			//{
+			//	await Coc6CharacterCreate.Create(msg);
+			//	return;
+			//}
 
 			// ダイスコマンドの解析
 			MatchCollection dices = Regex.Matches(dice_area, @"(?i)(?<sign>(\+|\-|))(?<value>\d+)(?<type>(d|r))(?<sides>\d+)((\[|@)(?<critical>\d+)(\]|))?");
