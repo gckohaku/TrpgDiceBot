@@ -38,6 +38,7 @@ namespace TrpgDiceBot
 			FileStream fs = new FileStream(dir_path + "/" + sheet.CharacterIndex + ".chdata", FileMode.Create, FileAccess.Write);
 			BinaryFormatter bf = new BinaryFormatter();
 			bf.Serialize(fs, sheet);
+			fs.Close();
 
 			Console.WriteLine("finish");
 		}

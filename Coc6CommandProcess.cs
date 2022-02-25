@@ -25,7 +25,7 @@ namespace TrpgDiceBot
 			string[] cmd_unit = command.Split(',');
 			string cmd_top = cmd_unit[0].ToLower().Trim();
 			// ランダムなステータスを表示
-			if(cmd_unit[0].ToLower().Trim() == "randomstatus")
+			if(cmd_top == "randomstatus")
 			{
 				await Coc6CharacterCreate.Create(msg);
 				return;
@@ -33,14 +33,7 @@ namespace TrpgDiceBot
 			// キャラクリ
 			else if(cmd_top == "chcreate" || cmd_top == "characreate")
 			{
-				if (!UserManager.Users.ContainsKey(msg.Author.Id))
-				{
-					UserManager.Users.Add(msg.Author.Id, new UserData(1));
-				}
-				else
-				{
-					UserManager.Users[msg.Author.Id].IncrementCount();
-				}
+				UserManager.IncrementCount(msg.Author.Id);
 				CocCharacterSheetManager.Create(msg.Author.Id, cmd_unit[1].Trim());
 				return;
 			}
