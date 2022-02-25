@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Runtime.Serialization.Formatters.Binary;
 
+using TrpgDiceBot.DoNotUpToGit;
+
 namespace TrpgDiceBot
 {
 	static class UserManager
@@ -24,7 +26,15 @@ namespace TrpgDiceBot
 
 		public static void Export()
 		{
+			Console.WriteLine("userdata export now");
 
+			string dir_path = HiddingStrings.MemoryDataDirectryString + "userdata/";
+			FileStream fs = new FileStream(dir_path + ".userdata", FileMode.Create, FileAccess.Write);
+			BinaryFormatter bf = new BinaryFormatter();
+			bf.Serialize(fs, Users);
+			fs.Close();
+
+			Console.WriteLine("finish");
 		}
 	}
 }

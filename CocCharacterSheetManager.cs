@@ -32,10 +32,10 @@ namespace TrpgDiceBot
 
 		public static void Export(ulong userId, string characterName)
 		{
-			Console.WriteLine("export now");
+			Console.WriteLine("charasheet export now");
 
 			Coc6CharacterSheet sheet = Sheets[userId].Find(s => s.CharacterName == characterName);
-			string dir_path = HiddingStrings.MemoryDataDirectryString + "chobjtest/" + userId;
+			string dir_path = HiddingStrings.MemoryDataDirectryString + "chobjtest/" + userId.ToString("x");
 			DirectoryUtils.SafeCreateDirectory(dir_path);
 			FileStream fs = new FileStream(dir_path + "/" + sheet.CharacterIndex + ".chdata", FileMode.Create, FileAccess.Write);
 			BinaryFormatter bf = new BinaryFormatter();

@@ -44,6 +44,13 @@ namespace TrpgDiceBot
 
 				return;
 			}
+			// テスト用　ユーザーデータの出力
+			else if (cmd_top == "udexp")
+			{
+				UserManager.Export();
+
+				return;
+			}
 		}
 	}
 }
