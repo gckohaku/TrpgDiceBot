@@ -21,6 +21,8 @@ namespace TrpgDiceBot
 			}
 			Sheets[userId].Add(new Coc6CharacterSheet(characterName, UserManager.Users[userId].CharaCount));
 			Console.WriteLine("ok");
+
+			Export(userId, characterName);
 		}
 
 		public static void AddStatus(string statusName, int value)
