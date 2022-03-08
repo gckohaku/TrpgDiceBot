@@ -14,15 +14,16 @@ namespace TrpgDiceBot
 
 		public static void Create(ulong userId, string characterName)
 		{
-			Console.WriteLine("hi");
+			Console.WriteLine("_e\tcreate charasheet");
 			if (!Sheets.ContainsKey(userId))
 			{
 				Sheets.Add(userId, new List<Coc6CharacterSheet>());
 			}
 			Sheets[userId].Add(new Coc6CharacterSheet(characterName, UserManager.Users[userId].CharaCount));
-			Console.WriteLine("ok");
+			Console.WriteLine("_e\tok");
 
 			Export(userId, characterName);
+			UserManager.Export();
 		}
 
 		public static void AddStatus(string statusName, int value)
@@ -32,7 +33,7 @@ namespace TrpgDiceBot
 
 		public static void Export(ulong userId, string characterName)
 		{
-			Console.WriteLine("charasheet export now");
+			Console.WriteLine("_e\tcharasheet export now");
 
 			Coc6CharacterSheet sheet = Sheets[userId].Find(s => s.CharacterName == characterName);
 			string dir_path = HiddingStrings.MemoryDataDirectryString + "chobjtest/" + userId.ToString("x");
@@ -42,7 +43,7 @@ namespace TrpgDiceBot
 			bf.Serialize(fs, sheet);
 			fs.Close();
 
-			Console.WriteLine("finish");
+			Console.WriteLine("_e\tfinish");
 		}
 	}
 }

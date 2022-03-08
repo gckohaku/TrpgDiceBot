@@ -33,7 +33,7 @@ namespace TrpgDiceBot
 				return;
 			}
 
-			Console.WriteLine(msg.Content + "\n");
+			Console.WriteLine("\n" + msg.Content + "\n");
 
 			// 全角文字を半角文字に
 			dice_area = ConvertAsciiAndNoSpace.ConvertAscii(dice_area);

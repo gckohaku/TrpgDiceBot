@@ -31,8 +31,6 @@ namespace TrpgDiceBot
 		{
 			var message = messageParam as SocketUserMessage;
 
-			//Console.WriteLine(message.Content);
-
 			if(message == null || message.Author.IsBot)
 			{
 				return;
@@ -47,7 +45,7 @@ namespace TrpgDiceBot
 
 				return;
 			}
-			Console.WriteLine(message.Content);
+			Console.WriteLine("\n" + message.Content + "\n");
 
 			var context = new SocketCommandContext(_client, message);
 

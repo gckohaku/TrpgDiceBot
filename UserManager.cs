@@ -10,7 +10,14 @@ namespace TrpgDiceBot
 {
 	static class UserManager
 	{
-		public static Dictionary<ulong, UserData> Users { get; } = new Dictionary<ulong, UserData>();
+		public static Dictionary<ulong, UserData> Users
+		{
+			get
+			{
+				return _users;
+			}
+		}
+		private static Dictionary<ulong, UserData> _users = new Dictionary<ulong, UserData>();
 
 		public static void IncrementCount(ulong userId)
 		{
@@ -26,15 +33,31 @@ namespace TrpgDiceBot
 
 		public static void Export()
 		{
-			Console.WriteLine("userdata export now");
+			Console.WriteLine("_e\tuserdata export now");
 
 			string dir_path = HiddingStrings.MemoryDataDirectryString + "userdata/";
-			FileStream fs = new FileStream(dir_path + ".userdata", FileMode.Create, FileAccess.Write);
-			BinaryFormatter bf = new BinaryFormatter();
-			bf.Serialize(fs, Users);
-			fs.Close();
+			using (FileStream fs = new FileStream(dir_path + ".userdata", FileMode.Create, FileAccess.Write))
+			{
+				BinaryFormatter bf = new BinaryFormatter();
+				bf.Serialize(fs, Users);
+			}
 
-			Console.WriteLine("finish");
+			Console.WriteLine("_e\tfinish");
+		}
+
+		public static void Import()
+		{
+			Console.WriteLine("_e\tuserdata import now");
+
+			string dir_path = HiddingStrings.MemoryDataDirectryString + "userdata/";
+
+			using (FileStream fs = new FileStream(dir_path + ".userdata", FileMode.Open, FileAccess.Read))
+			{
+				BinaryFormatter bf = new BinaryFormatter();
+				_users = (Dictionary<ulong, UserData>)bf.Deserialize(fs);
+			}
+
+			Console.WriteLine("_e\tfinish");
 		}
 	}
 }

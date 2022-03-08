@@ -18,10 +18,24 @@ namespace TrpgDiceBot
 			}
 		}
 		private int _charaCount;
+		public int CurrentSettingCharaId
+		{
+			get
+			{
+				return _currentSettingCharaId;
+			}
+			set
+			{
+				_currentSettingCharaId = Math.Max(value, _charaCount) - 1;
+			}
+		}
+		[NonSerialized()]
+		private int _currentSettingCharaId = -1;
 
 		public UserData(int charaCount)
 		{
 			_charaCount = charaCount;
+			UserName = "";
 		}
 
 		public void IncrementCount()
