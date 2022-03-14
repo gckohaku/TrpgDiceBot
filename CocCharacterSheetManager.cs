@@ -31,6 +31,43 @@ namespace TrpgDiceBot
 
 		}
 
+		public static string StatusesToString(ulong userId, int sheetIndex)
+		{
+			string ret = "";
+
+			Dictionary<string, dynamic> statuses = Sheets[userId][sheetIndex].Statuses;
+			List<string> keyList = new List<string> { "STR", "CON", "POW", "DEX", "APP", "SIZ", "INT", "EDU", "HP", "MP", "SAN", "DB", "IDEA", "KNOW", "LUCK" };
+			List<string> fixSpace = new List<string> { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "   ", "   ", "  ", "   ", " ", " ", " " };
+
+			for (int i = 0; i < 8; i++)
+			{
+				ret += keyList[i] + fixSpace[i] + statuses[keyList[i]] + "\n";
+			}
+
+			ret += "\n";
+
+			for (int i = 8; i < 15; i++)
+			{
+				ret += keyList[i] + fixSpace[i] + statuses[keyList[i]] + "\n";
+			}
+
+			return ret;
+		}
+
+		public static string SkillsToString(ulong userId, int sheetIndex)
+		{
+			string ret = "dummy";
+
+
+
+			return ret;
+		}
+
+		public static string ToString(ulong userId, int sheetIndex)
+		{
+			return StatusesToString(userId, sheetIndex) + "\n\n" + SkillsToString(userId, sheetIndex);
+		}
+
 		public static void Export(ulong userId, string characterName)
 		{
 			Console.WriteLine("_e\tcharasheet export now");

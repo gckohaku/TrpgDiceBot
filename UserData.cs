@@ -29,7 +29,7 @@ namespace TrpgDiceBot
 				_currentSettingCharaId = Math.Max(value, _charaCount) - 1;
 			}
 		}
-		[NonSerialized()]
+
 		private int _currentSettingCharaId = -1;
 
 		public UserData(int charaCount)

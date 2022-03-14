@@ -1,27 +1,11 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Text;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
-
-using TrpgDiceBot.DoNotUpToGit;
 
 namespace TrpgDiceBot
 {
-	[Serializable()]
-	class Coc6CharacterSheet
+	class TrpgCharacterSheetBase
 	{
-		public Dictionary<string, dynamic> Statuses
-		{
-			get
-			{
-				return _status.Statuses;
-			}
-		}
-		private Coc6CharacterStatus _status { get; set; } = new Coc6CharacterStatus();
-
-		private Coc6CharacterSkill _skill { get; set; } = new Coc6CharacterSkill();
 		public string CharacterName
 		{
 			get
@@ -29,7 +13,7 @@ namespace TrpgDiceBot
 				return _characterName;
 			}
 		}
-		private string _characterName;
+		protected string _characterName;
 
 		public int CharacterIndex
 		{
@@ -38,7 +22,7 @@ namespace TrpgDiceBot
 				return _characterIndex;
 			}
 		}
-		private int _characterIndex;
+		protected int _characterIndex;
 
 		// キャラシートごとの TRPG のルール ID (一番下のコメントにルール ID の説明あり)
 		public int Rule
@@ -52,9 +36,13 @@ namespace TrpgDiceBot
 				_rule = value;
 			}
 		}
-		private int _rule;
+		protected int _rule;
 
-		public Coc6CharacterSheet(string characterName, int characterIndex, int rule = 0)
+		public TrpgCharacterSheetBase()
+		{
+		}
+
+		public TrpgCharacterSheetBase(string characterName, int characterIndex, int rule = 0)
 		{
 			_characterName = characterName;
 			_characterIndex = characterIndex;

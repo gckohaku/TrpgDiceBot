@@ -24,6 +24,7 @@ namespace TrpgDiceBot
 			}
 			string[] cmd_unit = command.Split(',');
 			string cmd_top = cmd_unit[0].ToLower().Trim();
+
 			// ランダムなステータスを表示
 			if(cmd_top == "randomstatus")
 			{
@@ -36,6 +37,18 @@ namespace TrpgDiceBot
 				UserManager.IncrementCount(msg.Author.Id);
 				CocCharacterSheetManager.Create(msg.Author.Id, cmd_unit[1].Trim());
 				return;
+			}
+			// 現在作成しているキャラクターを表示
+			else if(cmd_top == "viewch" || cmd_top == "viewchara" || cmd_top == "viewcharas" || cmd_top == "viewcharacters")
+			{
+				
+			}
+			// Discord 側で選択中のキャラクターのステータスの表示
+			else if(cmd_top == "viewstatus")
+			{
+				ulong id = msg.Author.Id;
+
+				await msg.Channel.SendMessageAsync(msg.Author.Mention + "\n" + CocCharacterSheetManager.Sheets[id][UserManager.Users[id].CurrentSettingCharaId].CharacterName + "\n```" + CocCharacterSheetManager.StatusesToString(id, UserManager.Users[id].CurrentSettingCharaId) + "```");
 			}
 			// キャラターデータをファイルに保存
 			else if(cmd_top == "export")
