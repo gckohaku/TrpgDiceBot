@@ -56,13 +56,34 @@ namespace TrpgDiceBot
 				await msg.Channel.SendMessageAsync(ret_str + "```");
 			}
 			// ステータスの設定
+			else if(cmd_top == "setstatus")
+			{
+				ulong user_id = msg.Author.Id;
+				UserData user = UserManager.Users[user_id];
+				string ret_str = msg.Author.Mention + "\n";
+				Coc6CharacterSheet sheet = CocCharacterSheetManager.Sheets[user_id][user.CurrentSettingCharaId];
+				Coc6CharacterStatus status = sheet.Statuses;
 
+				for(int i = 1; i < cmd_unit.Length; i++)
+				{
+					string[] cmd_pair = cmd_unit[i].Split(":");
+					ret_str += sheet.Statuses.SetStatus(cmd_pair[0].Trim().ToUpper(), cmd_pair[1].Trim());
+				}
+
+				await msg.Channel.SendMessageAsync(ret_str + "ステータスの変更が完了しました");
+
+				CocCharacterSheetManager.ExportAll(user_id);
+
+				return;
+			}
 			// Discord 側で選択中のキャラクターのステータスの表示
 			else if(cmd_top == "viewstatus")
 			{
 				ulong id = msg.Author.Id;
 
 				await msg.Channel.SendMessageAsync(msg.Author.Mention + "\n" + CocCharacterSheetManager.Sheets[id][UserManager.Users[id].CurrentSettingCharaId].CharacterName + "\n```" + CocCharacterSheetManager.StatusesToString(id, UserManager.Users[id].CurrentSettingCharaId) + "```");
+
+				return;
 			}
 			// キャラターデータをファイルに保存
 			else if(cmd_top == "export")

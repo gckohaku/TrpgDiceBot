@@ -32,20 +32,27 @@ namespace TrpgDiceBot
 			Statuses["幸運"] = Statuses["LUCK"];
 		}
 
-		public string SetStatus(in string name, in int value)
+		public string SetStatus(in string name, in string value)
 		{
-			if (_keyList.Contains(name))
+			if (!_keyList.Contains(name))
 			{
-				Statuses[name] = value;
-				if (_desideDoNotReculcKey.Contains(name))
-				{
-					return "";
-				}
-				ReculcStatus();
-				return "";
+				return name + " does not exsist key\n";
 			}
 
-			return name + " do not exsist key";
+			int data;
+			if (int.TryParse(value, out data))
+			{
+				Statuses[name] = data;
+			}
+			else
+			{
+				return "this data isn't integer.\n";
+			}
+			if (!_desideDoNotReculcKey.Contains(name))
+			{
+				ReculcStatus();
+			}
+			return "";
 		}
 
 		private void ReculcStatus()

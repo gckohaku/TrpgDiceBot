@@ -12,11 +12,11 @@ namespace TrpgDiceBot
 	[Serializable()]
 	class Coc6CharacterSheet
 	{
-		public Dictionary<string, dynamic> Statuses
+		public Coc6CharacterStatus Statuses
 		{
 			get
 			{
-				return _status.Statuses;
+				return _status;
 			}
 		}
 		private Coc6CharacterStatus _status { get; set; } = new Coc6CharacterStatus();

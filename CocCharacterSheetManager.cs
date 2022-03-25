@@ -35,7 +35,7 @@ namespace TrpgDiceBot
 		{
 			string ret = "";
 
-			Dictionary<string, dynamic> statuses = Sheets[userId][sheetIndex].Statuses;
+			Dictionary<string, dynamic> statuses = Sheets[userId][sheetIndex].Statuses.Statuses;
 			List<string> keyList = new List<string> { "STR", "CON", "POW", "DEX", "APP", "SIZ", "INT", "EDU", "HP", "MP", "SAN", "DB", "IDEA", "KNOW", "LUCK" };
 			List<string> fixSpace = new List<string> { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "   ", "   ", "  ", "   ", " ", " ", " " };
 
@@ -101,6 +101,25 @@ namespace TrpgDiceBot
 			BinaryFormatter bf = new BinaryFormatter();
 			bf.Serialize(fs, sheet);
 			fs.Close();
+
+			Console.WriteLine("_e\tfinish");
+		}
+
+		public static void ExportAll(ulong userId)
+		{
+			Console.WriteLine("_e\tcharasheet export now");
+
+			List<Coc6CharacterSheet> sheets = Sheets[userId];
+
+			foreach (var sheet in sheets)
+			{
+				string dir_path = HiddingStrings.MemoryDataDirectryString + "chobjtest/" + userId.ToString("x");
+				DirectoryUtils.SafeCreateDirectory(dir_path);
+				FileStream fs = new FileStream(dir_path + "/" + sheet.CharacterIndex + ".chdata", FileMode.Create, FileAccess.Write);
+				BinaryFormatter bf = new BinaryFormatter();
+				bf.Serialize(fs, sheet);
+				fs.Close();
+			}
 
 			Console.WriteLine("_e\tfinish");
 		}
