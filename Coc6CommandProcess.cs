@@ -41,8 +41,22 @@ namespace TrpgDiceBot
 			// 現在作成しているキャラクターを表示
 			else if(cmd_top == "viewch" || cmd_top == "viewchara" || cmd_top == "viewcharas" || cmd_top == "viewcharacters")
 			{
-				
+				List<Coc6CharacterSheet> sheets = CocCharacterSheetManager.Sheets[msg.Author.Id];
+				string ret_str = msg.Author.Mention + "\n";
+				if(sheets.Count == 0)
+				{
+					await msg.Channel.SendMessageAsync(ret_str + "作成されたキャラクターはまだありません");
+					return;
+				}
+				ret_str += "```\n";
+				for (int i = 0; i < sheets.Count; i++)
+				{
+					ret_str += (i + 1) + " : " + sheets[i].CharacterName + "\n";
+				}
+				await msg.Channel.SendMessageAsync(ret_str + "```");
 			}
+			// ステータスの設定
+
 			// Discord 側で選択中のキャラクターのステータスの表示
 			else if(cmd_top == "viewstatus")
 			{
