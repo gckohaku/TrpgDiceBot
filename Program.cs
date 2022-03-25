@@ -18,6 +18,10 @@ namespace TrpgDiceBot
 		static void Main(string[] args)
 		{
 			UserManager.Import();
+			foreach (var userData in UserManager.Users)
+			{
+				CocCharacterSheetManager.Import(userData.Key);
+			}
 			new Program().MainAsync().GetAwaiter().GetResult();
 		}
 
@@ -41,7 +45,7 @@ namespace TrpgDiceBot
 			await client.LoginAsync(TokenType.Bot, DoNotUpToGit.HiddingStrings.BotToken);
 			await client.StartAsync();
 #if DEBUG
-			await client.SetActivityAsync(new Game("dev.00027", ActivityType.Playing));
+			await client.SetActivityAsync(new Game("dev.00028", ActivityType.Playing));
 #else
 			await client.SetActivityAsync(new Game("ver.1.40", ActivityType.Playing));
 #endif

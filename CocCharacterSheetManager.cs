@@ -68,6 +68,28 @@ namespace TrpgDiceBot
 			return StatusesToString(userId, sheetIndex) + "\n\n" + SkillsToString(userId, sheetIndex);
 		}
 
+		public static void Import(ulong userId)
+		{
+			Console.WriteLine("_e\tcharactersheet " + userId + " (" + userId.ToString("x") + ")" + " import now");
+
+			string dir_path = HiddingStrings.MemoryDataDirectryString + "chobjtest/" + userId.ToString("x") + "/";
+
+			List<Coc6CharacterSheet> user_sheets = new List<Coc6CharacterSheet>();
+			Sheets.Add(userId, new List<Coc6CharacterSheet>());
+
+			for (int i = 0; i < UserManager.Users[userId].CharaCount; i++)
+			{
+				Console.WriteLine("_e\t" + i);
+				using (FileStream fs = new FileStream(dir_path + (i + 1) + ".chdata", FileMode.Open, FileAccess.Read))
+				{
+					BinaryFormatter bf = new BinaryFormatter();
+					Sheets[userId].Add((Coc6CharacterSheet)bf.Deserialize(fs));
+				}
+			}
+
+			Console.WriteLine("_e\tfinish");
+		}
+
 		public static void Export(ulong userId, string characterName)
 		{
 			Console.WriteLine("_e\tcharasheet export now");
