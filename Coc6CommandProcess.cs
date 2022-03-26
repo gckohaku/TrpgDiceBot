@@ -81,9 +81,24 @@ namespace TrpgDiceBot
 			{
 				ulong id = msg.Author.Id;
 
-				await msg.Channel.SendMessageAsync(msg.Author.Mention + "\n" + CocCharacterSheetManager.Sheets[id][UserManager.Users[id].CurrentSettingCharaId].CharacterName + "\n```" + CocCharacterSheetManager.StatusesToString(id, UserManager.Users[id].CurrentSettingCharaId) + "```");
+				await msg.Channel.SendMessageAsync(msg.Author.Mention + "\n" + CocCharacterSheetManager.Sheets[id][UserManager.Users[id].CurrentSettingCharaId].CharacterName + "\n```\n" + CocCharacterSheetManager.StatusesToString(id, UserManager.Users[id].CurrentSettingCharaId) + "\n```");
 
 				return;
+			}
+			// 選択するキャラを変更
+			else if (cmd_top == "cred" || cmd_top == "currentedit")
+			{
+				UserData user = UserManager.Users[msg.Author.Id];
+				List<Coc6CharacterSheet> sheet = CocCharacterSheetManager.Sheets[msg.Author.Id];
+
+				int data;
+				if (int.TryParse(cmd_unit[1], out data)){
+					user.CurrentSettingCharaId = data - 1;
+				}
+				else
+				{
+					user.CurrentSettingCharaId = sheet.Find(s => s.CharacterName == cmd_unit[1]).CharacterIndex;
+				}
 			}
 			// キャラターデータをファイルに保存
 			else if(cmd_top == "export")
