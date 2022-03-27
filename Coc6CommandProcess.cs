@@ -25,6 +25,8 @@ namespace TrpgDiceBot
 			string[] cmd_unit = command.Split(',');
 			string cmd_top = cmd_unit[0].ToLower().Trim();
 
+			ISocketMessageChannel channel = msg.Channel;
+
 			// ランダムなステータスを表示
 			if(cmd_top == "randomstatus")
 			{
@@ -45,7 +47,7 @@ namespace TrpgDiceBot
 				string ret_str = msg.Author.Mention + "\n";
 				if(sheets.Count == 0)
 				{
-					await msg.Channel.SendMessageAsync(ret_str + "作成されたキャラクターはまだありません");
+					await channel.SendMessageAsync(ret_str + "作成されたキャラクターはまだありません");
 					return;
 				}
 				ret_str += "```\n";
@@ -53,7 +55,22 @@ namespace TrpgDiceBot
 				{
 					ret_str += (i + 1) + " : " + sheets[i].CharacterName + "\n";
 				}
-				await msg.Channel.SendMessageAsync(ret_str + "```");
+				await channel.SendMessageAsync(ret_str + "```");
+
+				return;
+			}
+			// 選択中のキャラのキャラクター名を変更
+			else if (cmd_top == "chname" || cmd_top == "changename")
+			{
+				ulong user_id = msg.Author.Id;
+				UserData user = UserManager.Users[user_id];
+				Coc6CharacterSheet sheet = CocCharacterSheetManager.Sheets[user_id][user.CurrentSettingCharaId];
+
+				sheet.ChangeCaracterName(cmd_unit[1].Trim());
+
+				CocCharacterSheetManager.Export(user_id, user.CurrentSettingCharaId);
+
+				return;
 			}
 			// ステータスの設定
 			else if(cmd_top == "setstatus")
@@ -70,9 +87,9 @@ namespace TrpgDiceBot
 					ret_str += sheet.Statuses.SetStatus(cmd_pair[0].Trim().ToUpper(), cmd_pair[1].Trim());
 				}
 
-				await msg.Channel.SendMessageAsync(ret_str + "ステータスの変更が完了しました");
+				await channel.SendMessageAsync(ret_str + "ステータスの変更が完了しました");
 
-				CocCharacterSheetManager.ExportAll(user_id);
+				CocCharacterSheetManager.Export(user_id, user.CurrentSettingCharaId);
 
 				return;
 			}
@@ -81,24 +98,31 @@ namespace TrpgDiceBot
 			{
 				ulong id = msg.Author.Id;
 
-				await msg.Channel.SendMessageAsync(msg.Author.Mention + "\n" + CocCharacterSheetManager.Sheets[id][UserManager.Users[id].CurrentSettingCharaId].CharacterName + "\n```\n" + CocCharacterSheetManager.StatusesToString(id, UserManager.Users[id].CurrentSettingCharaId) + "\n```");
+				await channel.SendMessageAsync(msg.Author.Mention + "\n" + CocCharacterSheetManager.Sheets[id][UserManager.Users[id].CurrentSettingCharaId].CharacterName + "\n```\n" + CocCharacterSheetManager.StatusesToString(id, UserManager.Users[id].CurrentSettingCharaId) + "\n```");
 
 				return;
 			}
 			// 選択するキャラを変更
-			else if (cmd_top == "cred" || cmd_top == "currentedit")
+			else if (cmd_top == "cred" || cmd_top == "crch" || cmd_top == "currentedit" || cmd_top == "currentchara")
 			{
 				UserData user = UserManager.Users[msg.Author.Id];
 				List<Coc6CharacterSheet> sheet = CocCharacterSheetManager.Sheets[msg.Author.Id];
 
 				int data;
+				Console.WriteLine("\t_try");
 				if (int.TryParse(cmd_unit[1], out data)){
-					user.CurrentSettingCharaId = data - 1;
+					Console.WriteLine("\t\tcorrect");
+					user.CurrentSettingCharaId = data;
 				}
 				else
 				{
+					Console.WriteLine("\t\tcatch");
 					user.CurrentSettingCharaId = sheet.Find(s => s.CharacterName == cmd_unit[1]).CharacterIndex;
 				}
+
+				UserManager.Export();
+
+				return;
 			}
 			// キャラターデータをファイルに保存
 			else if(cmd_top == "export")
@@ -114,6 +138,9 @@ namespace TrpgDiceBot
 
 				return;
 			}
+
+			Console.WriteLine("_ce\t\tcommand not found");
+			await channel.SendMessageAsync(cmd_top[0] + " is not found.");
 		}
 	}
 }

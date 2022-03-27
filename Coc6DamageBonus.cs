@@ -18,16 +18,21 @@ namespace TrpgDiceBot
 			}
 			if (val >= 17 && val <= 24)
 			{
-				return "+0";
+				return "±0";
 			}
 			if (val >= 25 && val <= 32)
 			{
 				return "+1D4";
 			}
-			else
+			if(val >= 33 && val <= 40)
 			{
 				return "+1d6";
 			}
+			if (val >= 41)
+			{
+				return "+" + ((val - 9) / 16) + "d6";
+			}
+			return "error";
 		}
 	}
 }

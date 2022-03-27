@@ -105,6 +105,21 @@ namespace TrpgDiceBot
 			Console.WriteLine("_e\tfinish");
 		}
 
+		public static void Export(ulong userId, int index)
+		{
+			Console.WriteLine("_e\tcharasheet export now");
+
+			Coc6CharacterSheet sheet = Sheets[userId][index];
+			string dir_path = HiddingStrings.MemoryDataDirectryString + "chobjtest/" + userId.ToString("x");
+			DirectoryUtils.SafeCreateDirectory(dir_path);
+			FileStream fs = new FileStream(dir_path + "/" + sheet.CharacterIndex + ".chdata", FileMode.Create, FileAccess.Write);
+			BinaryFormatter bf = new BinaryFormatter();
+			bf.Serialize(fs, sheet);
+			fs.Close();
+
+			Console.WriteLine("_e\tfinish");
+		}
+
 		public static void ExportAll(ulong userId)
 		{
 			Console.WriteLine("_e\tcharasheet export now");

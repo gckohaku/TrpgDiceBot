@@ -26,7 +26,7 @@ namespace TrpgDiceBot
 			}
 			set
 			{
-				_currentSettingCharaId = Math.Max(value, _charaCount) - 1;
+				_currentSettingCharaId = Math.Max(Math.Min(value, _charaCount), 1) - 1;
 			}
 		}
 

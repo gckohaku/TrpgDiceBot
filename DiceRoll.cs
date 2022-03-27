@@ -59,6 +59,11 @@ namespace TrpgDiceBot
 			if (coc_command_top_match.Success)
 			{
 				await Coc6CommandProcess.Execute(msg, dice_area[4..]);
+				// デバッグ用
+				ulong user_id = msg.Author.Id;
+				UserData user = UserManager.Users[user_id];
+
+				Console.WriteLine("_ce\t\tcurrent character index : " + user.CurrentSettingCharaId);
 				return;
 			}
 			// &coc6

@@ -60,6 +60,11 @@ namespace TrpgDiceBot
 			_characterIndex = characterIndex;
 			_rule = rule;
 		}
+
+		public void ChangeCaracterName(string name)
+		{
+			_characterName = name;
+		}
 	}
 }
 
