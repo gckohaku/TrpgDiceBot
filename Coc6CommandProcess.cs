@@ -109,15 +109,27 @@ namespace TrpgDiceBot
 				List<Coc6CharacterSheet> sheet = CocCharacterSheetManager.Sheets[msg.Author.Id];
 
 				int data;
-				Console.WriteLine("\t_try");
+				Console.WriteLine("_e\ttry");
 				if (int.TryParse(cmd_unit[1], out data)){
-					Console.WriteLine("\t\tcorrect");
+					Console.WriteLine("_ce\t\tcorrect");
 					user.CurrentSettingCharaId = data;
 				}
 				else
 				{
-					Console.WriteLine("\t\tcatch");
-					user.CurrentSettingCharaId = sheet.Find(s => s.CharacterName == cmd_unit[1]).CharacterIndex;
+					Console.WriteLine("_ce\t\tcatch");
+					try
+					{
+						user.CurrentSettingCharaId = sheet.Find(s => s.CharacterName == cmd_unit[1].Trim()).CharacterIndex;
+					}
+					catch (NullReferenceException)
+					{
+						await channel.SendMessageAsync("this name is not found");
+						Console.WriteLine("_ce\t\t\tnot found");
+					}
+					finally
+					{
+						await channel.SendMessageAsync("編集するキゃラを「" + sheet[user.CurrentSettingCharaId] + "」に変更しました");
+					}
 				}
 
 				UserManager.Export();
