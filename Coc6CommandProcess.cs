@@ -14,7 +14,7 @@ namespace TrpgDiceBot
 		public static async Task Execute(SocketUserMessage msg, string command)
 		{
 			command.TrimStart();
-			Console.WriteLine(command);
+			MyLogger.WriteLine(command);
 
 			// ランダムなステータスを表示
 			if(string.IsNullOrEmpty(command))
@@ -109,14 +109,15 @@ namespace TrpgDiceBot
 				List<Coc6CharacterSheet> sheet = CocCharacterSheetManager.Sheets[msg.Author.Id];
 
 				int data;
-				Console.WriteLine("_e\ttry");
-				if (int.TryParse(cmd_unit[1], out data)){
-					Console.WriteLine("_ce\t\tcorrect");
+				MyLogger.WriteLine("_e\ttry");
+				if (int.TryParse(cmd_unit[1], out data))
+				{
+					MyLogger.WriteLine("_ce\t\tcorrect");
 					user.CurrentSettingCharaId = data;
 				}
 				else
 				{
-					Console.WriteLine("_ce\t\tcatch");
+					MyLogger.WriteLine("_ce\t\tcatch");
 					try
 					{
 						user.CurrentSettingCharaId = sheet.Find(s => s.CharacterName == cmd_unit[1].Trim()).CharacterIndex;
@@ -124,12 +125,10 @@ namespace TrpgDiceBot
 					catch (NullReferenceException)
 					{
 						await channel.SendMessageAsync("this name is not found");
-						Console.WriteLine("_ce\t\t\tnot found");
+						MyLogger.WriteLine("_ce\t\t\tnot found");
+						return;
 					}
-					finally
-					{
-						await channel.SendMessageAsync("編集するキゃラを「" + sheet[user.CurrentSettingCharaId] + "」に変更しました");
-					}
+					await channel.SendMessageAsync("編集するキゃラを「" + sheet[user.CurrentSettingCharaId].CharacterName + "」に変更しました");
 				}
 
 				UserManager.Export();
@@ -151,7 +150,7 @@ namespace TrpgDiceBot
 				return;
 			}
 
-			Console.WriteLine("_ce\t\tcommand not found");
+			MyLogger.WriteLine("_ce\t\tcommand not found");
 			await channel.SendMessageAsync(cmd_top[0] + " is not found.");
 		}
 	}

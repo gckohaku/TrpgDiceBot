@@ -49,7 +49,7 @@ namespace TrpgDiceBot
 		{
 			char c = str[0];
 
-			Console.WriteLine("{0}", str == "✕");
+			MyLogger.WriteLine("{0}", str == "✕");
 		}
 
 		[Command("dicetimes")]

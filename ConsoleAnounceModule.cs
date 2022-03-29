@@ -15,7 +15,7 @@ namespace TrpgDiceBot
 		[Alias("c_a")]
 		public async Task ConsoleAnounceAsync(string sender, [Remainder] string str)
 		{
-			Console.WriteLine("\n" + sender + ">\n" + str + "\n");
+			MyLogger.WriteLine("\n" + sender + ">\n" + str + "\n");
 		}
 	}
 }

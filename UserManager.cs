@@ -33,7 +33,7 @@ namespace TrpgDiceBot
 
 		public static void Export()
 		{
-			Console.WriteLine("_e\tuserdata export now");
+			MyLogger.WriteLine("_e\tuserdata export now");
 
 			string dir_path = HiddingStrings.MemoryDataDirectryString + "userdata/";
 			using (FileStream fs = new FileStream(dir_path + ".userdata", FileMode.Create, FileAccess.Write))
@@ -42,12 +42,12 @@ namespace TrpgDiceBot
 				bf.Serialize(fs, Users);
 			}
 
-			Console.WriteLine("_e\tfinish");
+			MyLogger.WriteLine("_e\tfinish");
 		}
 
 		public static void Import()
 		{
-			Console.WriteLine("_e\tuserdata import now");
+			MyLogger.WriteLine("_e\tuserdata import now");
 
 			string dir_path = HiddingStrings.MemoryDataDirectryString + "userdata/";
 
@@ -57,7 +57,7 @@ namespace TrpgDiceBot
 				_users = (Dictionary<ulong, UserData>)bf.Deserialize(fs);
 			}
 
-			Console.WriteLine("_e\tfinish");
+			MyLogger.WriteLine("_e\tfinish");
 		}
 	}
 }

@@ -33,8 +33,6 @@ namespace TrpgDiceBot
 				return;
 			}
 
-			Console.WriteLine("\n" + msg.Content + "\n");
-
 			// 全角文字を半角文字に
 			dice_area = ConvertAsciiAndNoSpace.ConvertAscii(dice_area);
 
@@ -63,7 +61,7 @@ namespace TrpgDiceBot
 				ulong user_id = msg.Author.Id;
 				UserData user = UserManager.Users[user_id];
 
-				Console.WriteLine("_ce\t\tcurrent character index : " + user.CurrentSettingCharaId);
+				MyLogger.WriteLine("_ce\t\tcurrent character index : " + user.CurrentSettingCharaId);
 				return;
 			}
 			// &coc6

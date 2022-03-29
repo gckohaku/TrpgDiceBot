@@ -38,7 +38,7 @@ namespace TrpgDiceBot
 
 			foreach (Match m in mc)
 			{
-				Console.WriteLine(m.Value);
+				MyLogger.WriteLine(m.Value);
 				formula = formula.Replace(m.Value, m.Groups["front"].Value + "(" + m.Groups["val"].Value + m.Groups["bottom"].Value + ")");
 			}
 
@@ -46,7 +46,7 @@ namespace TrpgDiceBot
 
 			foreach (Match m in mc)
 			{
-				Console.WriteLine(m.Value);
+				MyLogger.WriteLine(m.Value);
 				formula = formula.Replace(m.Value, "^" + m.Groups["val"].Value);
 			}
 
@@ -55,7 +55,7 @@ namespace TrpgDiceBot
 
 			foreach (Match m in mc)
 			{
-				Console.WriteLine(m.Value);
+				MyLogger.WriteLine(m.Value);
 				formula = formula.Replace(m.Value, m.Groups["val"].Value + "*(");
 			}
 
@@ -65,7 +65,7 @@ namespace TrpgDiceBot
 			formula = formula.Replace("++", "+");
 			formula = formula.Replace("-+", "-");
 
-			Console.WriteLine(formula);
+			MyLogger.WriteLine(formula);
 
 			List<string> reverse_poland = MakeReversePoland(formula);
 			Stack<int> stk = new Stack<int>();
@@ -129,10 +129,10 @@ namespace TrpgDiceBot
 
 			for (int loop = 0; loop < res.Count; loop++)
 			{
-				Console.Write(res[loop] + " ");
+				MyLogger.Write(res[loop] + " ");
 			}
 
-			Console.Write("\n");
+			MyLogger.Write("\n");
 
 			return res;
 		}
@@ -167,7 +167,7 @@ namespace TrpgDiceBot
 
 			for(int loop = 0; loop < ret.Count; loop++)
 			{
-				Console.WriteLine(ret[loop]);
+				MyLogger.WriteLine(ret[loop]);
 			}
 
 			return ret;

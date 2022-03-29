@@ -14,13 +14,13 @@ namespace TrpgDiceBot
 
 		public static void Create(ulong userId, string characterName)
 		{
-			Console.WriteLine("_e\tcreate charasheet");
+			MyLogger.WriteLine("_e\tcreate charasheet");
 			if (!Sheets.ContainsKey(userId))
 			{
 				Sheets.Add(userId, new List<Coc6CharacterSheet>());
 			}
 			Sheets[userId].Add(new Coc6CharacterSheet(characterName, UserManager.Users[userId].CharaCount));
-			Console.WriteLine("_e\tok");
+			MyLogger.WriteLine("_e\tok");
 
 			Export(userId, characterName);
 			UserManager.Export();
@@ -70,7 +70,7 @@ namespace TrpgDiceBot
 
 		public static void Import(ulong userId)
 		{
-			Console.WriteLine("_e\tcharactersheet " + userId + " (" + userId.ToString("x") + ")" + " import now");
+			MyLogger.WriteLine("_e\tcharactersheet " + userId + " (" + userId.ToString("x") + ")" + " import now");
 
 			string dir_path = HiddingStrings.MemoryDataDirectryString + "chobjtest/" + userId.ToString("x") + "/";
 
@@ -79,7 +79,7 @@ namespace TrpgDiceBot
 
 			for (int i = 0; i < UserManager.Users[userId].CharaCount; i++)
 			{
-				Console.WriteLine("_e\t" + i);
+				MyLogger.WriteLine("_e\t" + i);
 				using (FileStream fs = new FileStream(dir_path + (i + 1) + ".chdata", FileMode.Open, FileAccess.Read))
 				{
 					BinaryFormatter bf = new BinaryFormatter();
@@ -87,12 +87,12 @@ namespace TrpgDiceBot
 				}
 			}
 
-			Console.WriteLine("_e\tfinish");
+			MyLogger.WriteLine("_e\tfinish");
 		}
 
 		public static void Export(ulong userId, string characterName)
 		{
-			Console.WriteLine("_e\tcharasheet export now");
+			MyLogger.WriteLine("_e\tcharasheet export now");
 
 			Coc6CharacterSheet sheet = Sheets[userId].Find(s => s.CharacterName == characterName);
 			string dir_path = HiddingStrings.MemoryDataDirectryString + "chobjtest/" + userId.ToString("x");
@@ -102,12 +102,12 @@ namespace TrpgDiceBot
 			bf.Serialize(fs, sheet);
 			fs.Close();
 
-			Console.WriteLine("_e\tfinish");
+			MyLogger.WriteLine("_e\tfinish");
 		}
 
 		public static void Export(ulong userId, int index)
 		{
-			Console.WriteLine("_e\tcharasheet export now");
+			MyLogger.WriteLine("_e\tcharasheet export now");
 
 			Coc6CharacterSheet sheet = Sheets[userId][index];
 			string dir_path = HiddingStrings.MemoryDataDirectryString + "chobjtest/" + userId.ToString("x");
@@ -117,12 +117,12 @@ namespace TrpgDiceBot
 			bf.Serialize(fs, sheet);
 			fs.Close();
 
-			Console.WriteLine("_e\tfinish");
+			MyLogger.WriteLine("_e\tfinish");
 		}
 
 		public static void ExportAll(ulong userId)
 		{
-			Console.WriteLine("_e\tcharasheet export now");
+			MyLogger.WriteLine("_e\tcharasheet export now");
 
 			List<Coc6CharacterSheet> sheets = Sheets[userId];
 
@@ -136,7 +136,7 @@ namespace TrpgDiceBot
 				fs.Close();
 			}
 
-			Console.WriteLine("_e\tfinish");
+			MyLogger.WriteLine("_e\tfinish");
 		}
 	}
 }

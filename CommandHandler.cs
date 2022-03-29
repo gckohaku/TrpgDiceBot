@@ -41,14 +41,15 @@ namespace TrpgDiceBot
 			if (!(message.HasCharPrefix('%', ref arg_pos) || message.HasMentionPrefix(_client.CurrentUser, ref arg_pos)))
 			{
 				// ひとつの文字列として読み取る場合
+				MyLogger.WriteLine("\n" + DateTime.Now + "\n" + message.Content + "\n");
 				await DiceRoll.Execute(message);
 
 				return;
 			}
-			Console.WriteLine("\n" + message.Content + "\n");
 
 			var context = new SocketCommandContext(_client, message);
 
+			MyLogger.WriteLine("\n" + DateTime.Now + "\n" + message.Content + "\n");
 			var result = await _commands.ExecuteAsync(context: context, argPos: arg_pos, services: null);
 
 			if (!result.IsSuccess)

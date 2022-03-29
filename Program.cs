@@ -9,14 +9,13 @@ namespace TrpgDiceBot
 {
 	class Program
 	{
-		private static string _settingDataFile = "settingData.txt";
-
 		private DiscordSocketClient client;
 		private CommandService comannds;
 		private CommandHandler handler;
 
 		static void Main(string[] args)
 		{
+			MyLogger.Create();
 			UserManager.Import();
 			foreach (var userData in UserManager.Users)
 			{
@@ -27,7 +26,7 @@ namespace TrpgDiceBot
 
 		private Task Log(LogMessage msg)
 		{
-			Console.WriteLine(msg.ToString());
+			MyLogger.WriteLine(msg.ToString());
 			return Task.CompletedTask;
 		}
 
@@ -45,11 +44,10 @@ namespace TrpgDiceBot
 			await client.LoginAsync(TokenType.Bot, DoNotUpToGit.HiddingStrings.BotToken);
 			await client.StartAsync();
 #if DEBUG
-			await client.SetActivityAsync(new Game("dev.00033", ActivityType.Playing));
+			await client.SetActivityAsync(new Game("dev.00034", ActivityType.Playing));
 #else
 			await client.SetActivityAsync(new Game("ver.1.40", ActivityType.Playing));
 #endif
-
 
 			await Task.Delay(-1);
 		}

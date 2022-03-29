@@ -10,7 +10,7 @@ namespace TrpgDiceBot
 	{
 		public static void Memory(in string id, in string memoryString)
 		{
-			Console.WriteLine(id + "\n" + memoryString);
+			MyLogger.WriteLine(id + "\n" + memoryString);
 			using (StreamWriter sw = new StreamWriter(HiddingStrings.MemoryDataDirectryString + "test/" + id + ".txt"))
 			{
 				sw.Write(memoryString);
