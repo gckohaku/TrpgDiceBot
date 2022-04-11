@@ -9,8 +9,8 @@ namespace TrpgDiceBot
 	{
 		private static bool _isConsole = false;
 		private static DateTime _currentFileTime;
-		private static readonly int _recreateFileMinutes = 10;
-		private static string _logDirectory;
+		private static readonly int _recreateFileMinutes = 60;
+		private static string _logDirectory = "./log/";
 
 		public static void Create()
 		{
@@ -137,16 +137,6 @@ namespace TrpgDiceBot
 				_currentFileTime = DateTime.Now;
 				Create();
 			}
-		}
-
-		public static void ChoiceLogDirectory()
-		{
-			if(Environment.OSVersion.Platform == PlatformID.Win32NT)
-			{
-				_logDirectory = "./log/";
-				return;
-			}
-			_logDirectory = "../../../home/gckohaku/trpgdicebot/log/";
 		}
 	}
 }

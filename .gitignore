@@ -1,3 +1,5 @@
 DoNotUpToGit/
 *.csproj
+*.csproj.user
 memo.txt
+.gitignore
