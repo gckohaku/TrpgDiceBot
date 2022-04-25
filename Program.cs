@@ -44,9 +44,9 @@ namespace TrpgDiceBot
 			await client.LoginAsync(TokenType.Bot, DoNotUpToGit.HiddingStrings.BotToken);
 			await client.StartAsync();
 #if DEBUG
-			await client.SetActivityAsync(new Game("dev.00036", ActivityType.Playing));
+			await client.SetActivityAsync(new Game("dev.00037", ActivityType.Playing));
 #else
-			await client.SetActivityAsync(new Game("dev.00036 検証中", ActivityType.Playing));
+			await client.SetActivityAsync(new Game("dev.00037 検証中", ActivityType.Playing));
 #endif
 
 			await Task.Delay(-1);

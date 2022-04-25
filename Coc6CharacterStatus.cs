@@ -36,7 +36,7 @@ namespace TrpgDiceBot
 		{
 			if (!_keyList.Contains(name))
 			{
-				return name + " does not exsist key\n";
+				return name + " is cannot setting key\n";
 			}
 
 			int data;
