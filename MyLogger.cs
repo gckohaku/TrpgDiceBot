@@ -10,7 +10,7 @@ namespace TrpgDiceBot
 		private static bool _isConsole = false;
 		private static DateTime _currentFileTime;
 		private static readonly int _recreateFileMinutes = 60;
-		private static readonly string _logDirectory = "./log/";
+		internal static readonly string _logDirectory = "./log/";
 		private static string _currentWritingFile;
 
 		public static void Create()

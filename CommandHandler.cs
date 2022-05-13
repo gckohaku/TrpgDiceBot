@@ -55,6 +55,7 @@ namespace TrpgDiceBot
 			if (!result.IsSuccess)
 			{
 				await context.Channel.SendMessageAsync(result.ErrorReason);
+				MyLogger.WriteLine("###ERROR######################\n" + result.ErrorReason + "\n##############################\n");
 			}
 		}
 	}

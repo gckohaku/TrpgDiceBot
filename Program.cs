@@ -10,7 +10,7 @@ namespace TrpgDiceBot
 	class Program
 	{
 		private DiscordSocketClient client;
-		private CommandService comannds;
+		private CommandService commannds;
 		private CommandHandler handler;
 
 		static void Main(string[] args)
@@ -33,10 +33,10 @@ namespace TrpgDiceBot
 		public async Task MainAsync()
 		{
 			client = new DiscordSocketClient();
-			comannds = new CommandService();
+			commannds = new CommandService();
 			client.Log += Log;
 
-			handler = new CommandHandler(client, comannds);
+			handler = new CommandHandler(client, commannds);
 
 			await handler.InitialCommandsAsync();
 
@@ -44,9 +44,9 @@ namespace TrpgDiceBot
 			await client.LoginAsync(TokenType.Bot, DoNotUpToGit.HiddingStrings.BotToken);
 			await client.StartAsync();
 #if DEBUG
-			await client.SetActivityAsync(new Game("dev.00037", ActivityType.Playing));
+			await client.SetActivityAsync(new Game("dev.00038", ActivityType.Playing));
 #else
-			await client.SetActivityAsync(new Game("dev.00037 検証中", ActivityType.Playing));
+			await client.SetActivityAsync(new Game("dev.00038 検証中", ActivityType.Playing));
 #endif
 
 			await Task.Delay(-1);
