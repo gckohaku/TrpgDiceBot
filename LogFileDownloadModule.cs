@@ -24,6 +24,11 @@ namespace TrpgDiceBot
 			{
 				return;
 			}
+			else if(HashUtil.GetSHA256Hash(Context.Message.Author.Id) != DoNotUpToGit.HiddingStrings.BotOwnerIdHashString)
+			{
+				await Context.Channel.SendMessageAsync("you are not owner");
+				return;
+			}
 
 			IEnumerable<string> log_files = Directory.EnumerateFiles(MyLogger._logDirectory + day);
 
@@ -45,8 +50,19 @@ namespace TrpgDiceBot
 			{
 				return;
 			}
+			else if (HashUtil.GetSHA256Hash(Context.Message.Author.Id) != DoNotUpToGit.HiddingStrings.BotOwnerIdHashString)
+			{
+				await Context.Channel.SendMessageAsync("you are not owner");
+				return;
+			}
 
 			await Context.Channel.SendFileAsync(Directory.EnumerateFiles(MyLogger._logDirectory + day).ToList<string>()[idx - 1]);
+		}
+		
+		[Command("test")]
+		public async Task TestAsync()
+		{
+			Console.WriteLine(HashUtil.GetSHA256Hash(Context.Message.Author.Id));
 		}
 	}
 }
