@@ -24,11 +24,17 @@ namespace TrpgDiceBot
 {
 	static class DiceRoll
 	{
+#if DEBUG
+		private static readonly string _diceRollPrefix = "#";
+#else
+		private static readonly string _diceRollPrefix = "&";
+#endif
+
 		public static async Task Execute(SocketUserMessage msg)
 		{
 			string dice_area = msg.Content;
 
-			if(dice_area == "")
+			if (dice_area == "")
 			{
 				return;
 			}
@@ -46,13 +52,12 @@ namespace TrpgDiceBot
 				MemoryTest.Memory(msg.Author.Id.ToString(), memory_match.Groups["memory"].Value);
 				return;
 			}
-
-			Match coc_command_top_match = Regex.Match(dice_area, @"(?i)^#coc");
-			Match coc6_command_top_match = Regex.Match(dice_area, @"(?i)^#coc6");
-#else
-			Match coc_command_top_match = Regex.Match(dice_area, @"(?i)^&coc");
-			Match coc6_command_top_match = Regex.Match(dice_area, @"(?i)^&coc6");
 #endif
+
+			Match coc_command_top_match = Regex.Match(dice_area, $@"(?i)^{_diceRollPrefix}coc");
+			Match coc6_command_top_match = Regex.Match(dice_area, $@"(?i)^{_diceRollPrefix}coc6");
+			MyLogger.WriteLine("_e\tここは来てもらわないと困る");
+
 			// &coc
 			if (coc_command_top_match.Success)
 			{
@@ -92,7 +97,7 @@ namespace TrpgDiceBot
 				return;
 			}
 
-			if (Regex.IsMatch(msg.ToString(), @"(?i)^&help$"))
+			if (Regex.IsMatch(msg.ToString(), $@"(?i)^{_diceRollPrefix}help$"))
 			{
 				await msg.Channel.SendMessageAsync(
 					"実は本当のプレフィックスは `%` です。\n" +
@@ -112,8 +117,8 @@ namespace TrpgDiceBot
 
 			string send_msg = msg.Author.Mention + '\n';
 
-			Match per_check = Regex.Match(dice_area, @"(?i)^&\s*(percent|per|p)");
-			Match tar = Regex.Match(dice_area, @"(?i)(?<=^&\s*(percent|per|p)\s*)(?<minus>\-*)(?<val>\d+)");
+			Match per_check = Regex.Match(dice_area, $@"(?i)^{_diceRollPrefix}\s*(percent|per|p)");
+			Match tar = Regex.Match(dice_area, $@"(?i)(?<=^{_diceRollPrefix}\s*(percent|per|p)\s*)(?<minus>\-*)(?<val>\d+)");
 
 			int finaly_tar = 0;
 
@@ -144,11 +149,7 @@ namespace TrpgDiceBot
 			RandomManager.ClearHistory();
 
 			// キャラクリの位置
-#if DEBUG
-			Match create_coc_match = Regex.Match(dice_area, @"(?i)^#coc$");
-#else
-			Match create_coc_match = Regex.Match(dice_area, @"(?i)^&coc$");
-#endif
+			Match create_coc_match = Regex.Match(dice_area, $@"(?i)^{_diceRollPrefix}coc$");
 
 			// コマンドが一致したらキャラクリをするよ
 			//if (create_coc_match.Success)

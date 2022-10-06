@@ -7,7 +7,7 @@ namespace TrpgDiceBot
 {
 	static class MyLogger
 	{
-		private static bool _isConsole = false;
+		private static readonly bool _isConsole = false;
 		private static DateTime _currentFileTime;
 		private static readonly int _recreateFileMinutes = 60;
 		internal static readonly string _logDirectory = "./log/";

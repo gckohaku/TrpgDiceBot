@@ -16,11 +16,11 @@ namespace TrpgDiceBot
 		static void Main(string[] args)
 		{
 			MyLogger.Create();
-			UserManager.Import();
-			foreach (var userData in UserManager.Users)
-			{
-				CocCharacterSheetManager.Import(userData.Key);
-			}
+			//UserManager.Import();
+			//foreach (var userData in UserManager.Users)
+			//{
+			//	CocCharacterSheetManager.Import(userData.Key);
+			//}
 			new Program().MainAsync().GetAwaiter().GetResult();
 		}
 
@@ -46,7 +46,7 @@ namespace TrpgDiceBot
 #if DEBUG
 			await client.SetActivityAsync(new Game("dev.00039", ActivityType.Playing));
 #else
-			await client.SetActivityAsync(new Game("dev.00038 検証中", ActivityType.Playing));
+			await client.SetActivityAsync(new Game("ver.1.40_linux", ActivityType.Playing));
 #endif
 
 			await Task.Delay(-1);
