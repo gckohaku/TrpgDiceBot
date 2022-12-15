@@ -13,7 +13,7 @@ namespace TrpgDiceBot
 {
 	static class Coc6CharacterCreate
 	{
-		private static Dictionary<string, Tuple<int, int>> _prmInfo = new Dictionary<string, Tuple<int, int>>();
+		private static Dictionary<string, Tuple<int, int>> _prmRollRuleInfoes = new Dictionary<string, Tuple<int, int>>();
 		private static Dictionary<string, int> _prmResult = new Dictionary<string, int>();
 
 		public static async Task Create(SocketUserMessage msg)
@@ -22,20 +22,22 @@ namespace TrpgDiceBot
 
 			string send_msg = msg.Author.Mention + "\nType : CoC\n";
 
-			foreach (var v in _prmInfo)
+			foreach (var rule in _prmRollRuleInfoes)
 			{
-				for (int i = 0; i < v.Value.Item1; i++)
+				RandomManager.ClearHistory();
+
+				for (int i = 0; i < rule.Value.Item1; i++)
 				{
 					RandomManager.Rand(6);
 				}
 
-				_prmResult[v.Key] = RandomManager.DiceResultHistory.Sum() + v.Value.Item2;
-				send_msg += v.Key + " : " + _prmResult[v.Key] + " ([";
+				_prmResult[rule.Key] = RandomManager.DiceResultHistory.Sum() + rule.Value.Item2;
+				send_msg += rule.Key + " : " + _prmResult[rule.Key] + " ([";
 
-				for (int i = 0; i < v.Value.Item1; i++)
+				for (int i = 0; i < rule.Value.Item1; i++)
 				{
 					send_msg += RandomManager.DiceResultHistory[i];
-					if (i != v.Value.Item1 - 1)
+					if (i != rule.Value.Item1 - 1)
 					{
 						send_msg += ", ";
 					}
@@ -45,14 +47,12 @@ namespace TrpgDiceBot
 					}
 				}
 
-				if(v.Value.Item2 != 0)
+				if(rule.Value.Item2 != 0)
 				{
-					send_msg += " + " + v.Value.Item2;
+					send_msg += " + " + rule.Value.Item2;
 				}
 
 				send_msg += ")\n";
-
-				RandomManager.ClearHistory();
 			}
 
 			send_msg += "\n";
@@ -70,14 +70,14 @@ namespace TrpgDiceBot
 
 		private static void StorePrmInfos()
 		{
-			_prmInfo["STR"] = new Tuple<int, int>(3, 0);
-			_prmInfo["CON"] = new Tuple<int, int>(3, 0);
-			_prmInfo["POW"] = new Tuple<int, int>(3, 0);
-			_prmInfo["DEX"] = new Tuple<int, int>(3, 0);
-			_prmInfo["APP"] = new Tuple<int, int>(3, 0);
-			_prmInfo["SIZ"] = new Tuple<int, int>(2, 6);
-			_prmInfo["INT"] = new Tuple<int, int>(2, 6);
-			_prmInfo["EDU"] = new Tuple<int, int>(3, 3);
+			_prmRollRuleInfoes["STR"] = new Tuple<int, int>(3, 0);
+			_prmRollRuleInfoes["CON"] = new Tuple<int, int>(3, 0);
+			_prmRollRuleInfoes["POW"] = new Tuple<int, int>(3, 0);
+			_prmRollRuleInfoes["DEX"] = new Tuple<int, int>(3, 0);
+			_prmRollRuleInfoes["APP"] = new Tuple<int, int>(3, 0);
+			_prmRollRuleInfoes["SIZ"] = new Tuple<int, int>(2, 6);
+			_prmRollRuleInfoes["INT"] = new Tuple<int, int>(2, 6);
+			_prmRollRuleInfoes["EDU"] = new Tuple<int, int>(3, 3);
 		}
 
 		private static string CalcDamageBonus(int val)
